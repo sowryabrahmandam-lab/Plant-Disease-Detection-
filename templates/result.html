@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+{% block title %}Result — {{ plant }} {{ disease }} | PlantGuard AI{% endblock %}
+
+{% block content %}
+
+<section class="result-section py-5">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+
+        <!-- Back Button -->
+        <a href="{{ url_for('index') }}" class="btn btn-back mb-4">
+          <i class="fa-solid fa-arrow-left me-2"></i>Analyze Another Leaf
+        </a>
+
+        <div class="result-card p-4 p-md-5">
+
+          <!-- Header Badge -->
+          <div class="text-center mb-4">
+            {% if is_healthy %}
+              <span class="result-badge healthy">
+                <i class="fa-solid fa-circle-check me-2"></i>Healthy Plant
+              </span>
+            {% else %}
+              <span class="result-badge disease">
+                <i class="fa-solid fa-triangle-exclamation me-2"></i>Disease Detected
+              </span>
+            {% endif %}
+          </div>
+
+          <!-- Image + Info Row -->
+          <div class="row align-items-center g-4 mb-4">
+            <div class="col-md-5 text-center">
+              <img src="{{ url_for('static', filename='uploads/' + img) }}"
+                   class="result-img img-fluid rounded" alt="Analyzed Leaf"/>
+            </div>
+            <div class="col-md-7">
+              <div class="info-row mb-2">
+                <span class="info-label"><i class="fa-solid fa-leaf me-2"></i>Plant</span>
+                <span class="info-value">{{ plant }}</span>
+              </div>
+              <div class="info-row mb-2">
+                <span class="info-label"><i class="fa-solid fa-virus me-2"></i>Disease</span>
+                <span class="info-value {% if is_healthy %}text-success{% else %}text-danger{% endif %}">
+                  {{ disease }}
+                </span>
+              </div>
+              <div class="info-row mb-3">
+                <span class="info-label"><i class="fa-solid fa-chart-simple me-2"></i>Confidence</span>
+                <span class="info-value fw-bold">{{ confidence }}%</span>
+              </div>
+
+              <!-- Confidence Bar -->
+              <div class="conf-label small text-muted mb-1">Model Confidence</div>
+              <div class="progress conf-progress mb-1" style="height: 16px;">
+                <div class="progress-bar conf-bar {% if is_healthy %}bg-success{% else %}conf-bar-disease{% endif %}"
+                     role="progressbar"
+                     data-width="{{ confidence }}"
+                     style="width: 0%; transition: width 1.2s ease;">
+                  {{ confidence }}%
+                </div>
+              </div>
+              <div class="d-flex justify-content-between small text-muted mt-1">
+                <span>0%</span><span>50%</span><span>100%</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Treatment Box -->
+          <div class="treatment-box p-4 {% if is_healthy %}treatment-healthy{% else %}treatment-disease{% endif %}">
+            <h5 class="treatment-title mb-2">
+              {% if is_healthy %}
+                <i class="fa-solid fa-star me-2"></i>Plant Care Tips
+              {% else %}
+                <i class="fa-solid fa-kit-medical me-2"></i>Recommended Treatment
+              {% endif %}
+            </h5>
+            <p class="treatment-text mb-0">{{ treatment }}</p>
+          </div>
+
+          <!-- Additional Info Cards -->
+          <div class="row g-3 mt-3">
+            <div class="col-md-6">
+              <div class="tip-card p-3">
+                <div class="tip-icon mb-2"><i class="fa-solid fa-droplet"></i></div>
+                <div class="tip-title">Watering Tip</div>
+                <div class="tip-text small text-muted">Avoid overhead watering. Water at the base early morning to reduce fungal spread.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="tip-card p-3">
+                <div class="tip-icon mb-2"><i class="fa-solid fa-wind"></i></div>
+                <div class="tip-title">Air Circulation</div>
+                <div class="tip-text small text-muted">Ensure proper plant spacing to improve airflow and reduce humidity buildup.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex gap-3 mt-4 flex-wrap">
+            <a href="{{ url_for('index') }}" class="btn btn-analyze flex-grow-1 py-2">
+              <i class="fa-solid fa-rotate me-2"></i>Analyze Another Leaf
+            </a>
+            <button class="btn btn-outline-secondary flex-grow-1 py-2" onclick="window.print()">
+              <i class="fa-solid fa-print me-2"></i>Print Report
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Disclaimer -->
+        <p class="text-center text-muted small mt-3">
+          <i class="fa-solid fa-circle-info me-1"></i>
+          This is an AI-based prediction. Always consult a certified agronomist for professional advice.
+        </p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Animate confidence bar on page load
+  $(document).ready(function () {
+    setTimeout(function () {
+      $('.conf-bar').each(function () {
+        var width = $(this).data('width');
+        $(this).css('width', width + '%');
+      });
+    }, 300);
+  });
+</script>
+{% endblock %}
