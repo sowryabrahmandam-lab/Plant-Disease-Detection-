@@ -98,29 +98,11 @@ http://localhost:5000
 - 🔍 CNN-powered disease detection (38 classes, 14 plants)
 - 📊 Animated confidence progress bar
 - 💊 Specific treatment tips per disease
-- 🌙 Dark mode toggle (saved to localStorage)
 - ✅ jQuery form validation (type, size, empty checks)
 - 📱 Fully responsive Bootstrap layout
 - 🔒 Secure file handling with Werkzeug
 
 ---
 
-## 📸 Screenshots
-
-> Add screenshots of home page and result page here after running the app.
-
----
-
-## 🚀 Optional Deployment (Render)
-
-1. Push code to GitHub
-2. Go to [render.com](https://render.com) → New Web Service
-3. Connect your GitHub repo
-4. Set build command: `pip install -r requirements.txt`
-5. Set start command: `python app.py`
-
----
-
-## 📝 License
 
 MIT License — free to use and modify.
